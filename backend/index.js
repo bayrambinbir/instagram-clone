@@ -1,6 +1,13 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import dotenv from "dotenv";
+import connectDB from "./config/db.js";
+
+dotenv.config({}); // Load environment variables from .env file
+
+// Define the PORT
+const PORT = process.env.PORT || 8000;
 
 // Create an pspress application
 const app = express();
@@ -27,8 +34,13 @@ app.get("/", (req, res) => {
 });
 
 // Start the server on port 8000
-const PORT = 8000;
+const listen = async () => {
+  const conn = await connectDB();
+  if (conn) {
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  }
+};
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+listen();
