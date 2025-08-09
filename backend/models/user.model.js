@@ -9,10 +9,10 @@ const userSchema = new mongoose.Schema(
     profilePicture: { type: String, default: "" },
     bio: { type: String, default: "" },
     gender: { type: String, enum: ["male", "female"] },
-    followers: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
-    following: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
-    posts: [{ type: mongoose.Schema.ObjectId, ref: "Post" }],
-    bookmarks: [{ type: mongoose.Schema.ObjectId, ref: "Post" }],
+    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
+    bookmarks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
   },
   { timeStamps: true }
 );
