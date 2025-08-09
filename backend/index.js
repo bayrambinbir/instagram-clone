@@ -37,6 +37,7 @@ app.get("/", (req, res) => {
 const listen = async () => {
   const conn = await connectDB();
   if (conn) {
+    connectDB();
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
