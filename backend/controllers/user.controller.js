@@ -113,3 +113,33 @@ export const logout = async (_, res) => {
     console.log(error);
   }
 };
+
+// Get user profile logic
+export const getProfile = async (req, res) => {
+  try {
+    // use req.params.id to get User ID from the route parameter
+    const userId = req.params.id;
+    // find user by userId
+    const user = await User.findById(userId);
+    // return 404 if user is not found
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+        success: false,
+      });
+    }
+    // return the user object if found
+    if (user) {
+      return res.status(200).json({
+        user,
+        success: true,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Server error",
+      success: false,
+    });
+  }
+};
