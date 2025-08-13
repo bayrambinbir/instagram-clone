@@ -120,7 +120,7 @@ export const getProfile = async (req, res) => {
     // use req.params.id to get User ID from the route parameter
     const userId = req.params.id;
     // find user by userId
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).select("-password");
     // return 404 if user is not found
     if (!user) {
       return res.status(404).json({
@@ -141,5 +141,21 @@ export const getProfile = async (req, res) => {
       message: "Server error",
       success: false,
     });
+  }
+};
+
+// Edit profile
+export const editProfile = async (req, res) => {
+  try {
+    // Retrieved from the authenticated middleware
+    const userId = req.id;
+    const { bio, gender } = req.body;
+    const profilePicture = req.file;
+    let cloudResponse;
+    if (profilePicture) {
+      
+    }
+  } catch (error) {
+    console.log(error);
   }
 };
