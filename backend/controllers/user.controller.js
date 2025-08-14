@@ -185,3 +185,29 @@ export const editProfile = async (req, res) => {
     });
   }
 };
+
+// Suggested users logic
+export const suggestedUsers = async (req, res) => {
+  try {
+    // $ne means: not equal to
+    const suggestedUsers = await User.find({ _id: { $ne: req.id } }).select(
+      "-password"
+    );
+    if (!suggestedUsers || suggestedUsers.length == 0) {
+      return res.status(400).json({
+        message: "Currently do not have any users",
+      });
+    }
+    // Return the suggested users
+    return res.status(200).json({
+      success: true,
+      users: suggestedUsers,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "An error occured while fetching suggested users.",
+      success: false,
+    });
+  }
+};
