@@ -42,12 +42,14 @@ npm i -D nodemon
 2. In your Cloudinary dashboard, copy your **Cloud Name**, **API Key**, and **API Secret**.
 3. Install the Cloudinary SDK in your backend:
    ```sh
+   cd backend
    npm install cloudinary
    ```
 4. Create a config file at `backend/config/cloudinary.js`:
+
    ```js
-   import { v2 as cloudinary } from 'cloudinary';
-   import dotenv from 'dotenv';
+   import { v2 as cloudinary } from "cloudinary";
+   import dotenv from "dotenv";
    dotenv.config();
 
    cloudinary.config({
@@ -58,6 +60,7 @@ npm i -D nodemon
 
    export default cloudinary;
    ```
+
 5. Add your Cloudinary credentials to your `.env` file:
    ```env
    CLOUDINARY_CLOUD_NAME=your_cloud_name
@@ -66,15 +69,17 @@ npm i -D nodemon
    ```
 6. To upload an image in your backend controller:
 7. Install the `datauri` package (for handling file uploads as Data URLs):
+
    ```sh
    cd backend
    npm i datauri
    ```
+
    ```js
-   import cloudinary from '../config/cloudinary.js';
+   import cloudinary from "../config/cloudinary.js";
 
    const result = await cloudinary.uploader.upload(filePath, {
-     folder: 'instagram-clone',
+     folder: "instagram-clone",
    });
    ```
 
