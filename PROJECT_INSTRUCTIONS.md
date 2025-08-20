@@ -68,11 +68,19 @@ npm i -D nodemon
    CLOUDINARY_API_SECRET=your_api_secret
    ```
 6. To upload an image in your backend controller:
+
 7. Install the `datauri` package (for handling file uploads as Data URLs):
 
    ```sh
    cd backend
    npm i datauri
+   ```
+
+8. Install the `multer` package (for handling file uploads):
+
+   ```sh
+   cd backend
+   npm i multer
    ```
 
    ```js

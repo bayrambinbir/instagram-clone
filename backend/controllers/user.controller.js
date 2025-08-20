@@ -187,7 +187,7 @@ export const editProfile = async (req, res) => {
 };
 
 // Suggested users logic
-export const suggestedUsers = async (req, res) => {
+export const getSuggestedUsers = async (req, res) => {
   try {
     // $ne means: not equal to
     const suggestedUsers = await User.find({ _id: { $ne: req.id } }).select(

@@ -3,6 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
+import userRoute from "./routes/user.route.js";
 
 dotenv.config({}); // Load environment variables from .env file
 
@@ -32,6 +33,8 @@ app.get("/", (req, res) => {
     success: true,
   });
 });
+
+app.use("/api/v1/user", userRoute);
 
 // Start the server on port 8000
 const listen = async () => {
