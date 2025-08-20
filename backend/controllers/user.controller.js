@@ -211,3 +211,58 @@ export const suggestedUsers = async (req, res) => {
     });
   }
 };
+
+// Follow and Unfollow logic
+export const followOrUnfollow = async (req, res) => {
+  try {
+    const follower = req.id;
+    const followee = req.params.id;
+    if (follower === followee) {
+      return res.status(400).json({
+        message: "You can't follow or unfollow yourself",
+        success: false,
+      });
+    }
+    const user = await User.findById(follower);
+    const targetUser = await User.findById(followee);
+    if (!user || !targetUser) {
+      return res.status(404).json({
+        message: "User not found",
+        success: false,
+      });
+    }
+    // Check whether to follow or unfollow
+    const isFollowing = user.following.includes(followee);
+    if (isFollowing) {
+      // logic to unfollow user
+      await Promise.all([
+        User.updateOne({ _id: follower }, { $pull: { following: followee } }),
+      ]);
+      await Promise.all([
+        User.updateOne({ _id: followee }, { $pull: { followers: follower } }),
+      ]);
+      return res.status(200).json({
+        message: "Unfollowed successfully",
+        success: true,
+      });
+    } else {
+      // logic to follow user
+      await Promise.all([
+        User.updateOne({ _id: follower }, { $push: { following: followee } }),
+      ]);
+      await Promise.all([
+        User.updateOne({ _id: followee }, { $push: { followers: follower } }),
+      ]);
+      return res.status(200).json({
+        message: "Followed successfully",
+        success: true,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Server error.",
+      success: false,
+    });
+  }
+};
