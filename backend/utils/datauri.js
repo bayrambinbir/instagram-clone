@@ -5,8 +5,8 @@ const parser = new DataUriParser();
 
 const getDataUri = (file) => {
   // Get the file extension using path.extname
-  const extName = path.extname(file.originalname).toString;
-  // Use parser to format the file to data URI
+  const extName = path.extname(file.originalname).toString();
+  // Use parser to format the file to data URI and return the content
   return parser.format(extName, file.buffer).content;
 };
 

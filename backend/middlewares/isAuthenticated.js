@@ -20,7 +20,7 @@ const isAuthenticated = async (req, res, next) => {
       });
     }
     // Attach the decoded user ID to the request object
-    req.id = token.userId;
+    req.id = decode.userId;
     // Proceed to the next middleware or route handles
     next();
   } catch (error) {

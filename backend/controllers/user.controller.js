@@ -1,7 +1,8 @@
-import User from "../models/user.model.js";
+import { User } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import getDataUri from "../utils/datauri.js";
+import cloudinary from "../utils/cloudinary.js";
 
 //Registration Logic
 export const register = async (req, res) => {
@@ -94,6 +95,7 @@ export const login = async (req, res) => {
       .json({
         message: `Welcome back ${user.username}`,
         success: true,
+        user,
       });
   } catch (error) {
     console.log(error);
@@ -159,7 +161,7 @@ export const editProfile = async (req, res) => {
       const fileUri = getDataUri(profilePicture);
       cloudResponse = await cloudinary.uploader.upload(fileUri);
     }
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).select("-password");
     if (!user) {
       return res.status(404).json({
         message: "User not found",
@@ -170,15 +172,15 @@ export const editProfile = async (req, res) => {
     if (bio) user.bio = bio;
     if (gender) user.gender = gender;
     // update profile picture url
-    if (profilePicture)
-      user.profilePicture = profilePicture = cloudResponse.secure_uri;
+    if (profilePicture) {
+      user.profilePicture = cloudResponse.secure_url;
+    }
     await user.save();
     return res.status(200).json({
       message: "Profile updated successfully",
       success: true,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       message: "Server error",
       success: false,
