@@ -24,6 +24,7 @@ npm init -y .
 ```sh
 cd backend
 npm i express mongoose jsonwebtoken bcryptjs cors cookie-parser dotenv
+npm i sharp
 npm i -D nodemon
 ```
 
