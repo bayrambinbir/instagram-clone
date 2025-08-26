@@ -90,3 +90,31 @@ export const addNewPost = async (req, res) => {
     });
   }
 };
+
+// Get all post logic
+export const getAllPost = async (req, res) => {
+  try {
+    // Fetch posts with sorting and population
+    const posts = await Post.find()
+      .sort({
+        createdAt: -1,
+      })
+      .populate({ path: "author", select: "username profilePicture" })
+      .populate(
+        { path: "comments", createdAt: -1 },
+        populate({ path: "author", select: "username profilePicture" })
+      );
+    // Return the fetched posts
+    return res.status(200).json({
+      posts,
+      success: true,
+    });
+  } catch (error) {
+    console.error("Error fetching posts", error);
+    return res.status(500).json({
+      message: "An Unexpected error occured while fetching the posts",
+      error: error.message,
+      success: false,
+    });
+  }
+};
