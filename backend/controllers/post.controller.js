@@ -147,3 +147,65 @@ export const getUserPost = async (req, res) => {
     });
   }
 };
+
+// Like logic
+export const likePost = async (req, res) => {
+  try {
+    const likerId = req.id;
+    const postId = req.params.id;
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({
+        message: "Post not found",
+        success: false,
+      });
+    }
+    // Like logic
+    await post.updateOne({ $addToSet: { likes: likerId } });
+
+    // Implement socket.io for real time notification
+
+    return res.status(200).json({
+      message: "Post liked",
+      success: true,
+    });
+  } catch (error) {
+    console.error("Error liking post", error);
+    return res.status(500).json({
+      message: "An Unexpected error occured while liking post",
+      error: error.message,
+      success: false,
+    });
+  }
+};
+
+// Dislike logic
+export const dislikePost = async (req, res) => {
+  try {
+    const likerId = req.id;
+    const postId = req.params.id;
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({
+        message: "Post not found",
+        success: false,
+      });
+    }
+    // Dislike logic
+    await post.updateOne({ $pull: { likes: likerId } });
+
+    // Implement socket.io for real time notification
+
+    return res.status(200).json({
+      message: "Post disliked",
+      success: true,
+    });
+  } catch (error) {
+    console.error("Error disliking post", error);
+    return res.status(500).json({
+      message: "An Unexpected error occured while disliking post",
+      error: error.message,
+      success: false,
+    });
+  }
+};
