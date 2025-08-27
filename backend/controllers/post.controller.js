@@ -118,3 +118,32 @@ export const getAllPost = async (req, res) => {
     });
   }
 };
+
+// get individual user post logic
+export const getUserPost = async (req, res) => {
+  try {
+    const authorId = req.id;
+    const posts = await Post.find({ author: authorId })
+      .sort({
+        createdAt: -1,
+      })
+      .populate({ path: "author", select: "username profilePicture" })
+      .populate({
+        path: "comments",
+        sort: { createdAt: -1 },
+        populate: { path: "author", select: "username profilePicture" },
+      });
+    return res.status(200).json({
+      posts,
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+    console.error("Error fetching user posts", error);
+    return res.status(500).json({
+      message: "An Unexpected error occured while fetching user posts",
+      error: error.message,
+      success: false,
+    });
+  }
+};
