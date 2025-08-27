@@ -255,10 +255,50 @@ export const addComment = async (req, res) => {
       success: true,
     });
   } catch (error) {
-      console.error("Error adding comment", error);
-      return res.status(500).json({
-        message: "An Unexpected error occured while adding the comment",
+    console.error("Error adding comment", error);
+    return res.status(500).json({
+      message: "An Unexpected error occured while adding the comment",
+      success: false,
+    });
+  }
+};
+
+// Get comments of post logic
+export const getCommentsOfPost = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({
+        message: "Post not found",
         success: false,
       });
+    }
+    // Fetch the comments for the given post
+    const comments = await Comment.find({ post: postId }).populate({
+      path: "author",
+      select: "username profilePicture",
+    });
+
+    // if no comments found, return an empty array with a success message
+    if (comments.length === 0) {
+      return res.status(200).json({
+        message: "No comments found for this post",
+        success: true,
+        comments: [],
+      });
+    }
+    // Return comments if found
+    return res.status(200).json({
+      success: true,
+      comments,
+    });
+  } catch (error) {
+    console.error("Error fetching comments", error);
+    return res.status(500).json({
+      message: "An Unexpected error occured while feching comments",
+      success: false,
+      error: error.message,
+    });
   }
 };
