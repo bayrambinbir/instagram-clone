@@ -25,7 +25,7 @@ export const addNewPost = async (req, res) => {
       });
     }
     // Ensure file is an image
-    if (!image.mimitype.startsWith("image/")) {
+    if (!image.mimetype.startsWith("image/")) {
       return res.status(400).json({
         message: "Upload file must be an image",
       });
@@ -101,10 +101,11 @@ export const getAllPost = async (req, res) => {
         createdAt: -1,
       })
       .populate({ path: "author", select: "username profilePicture" })
-      .populate(
-        { path: "comments", createdAt: -1 },
-        populate({ path: "author", select: "username profilePicture" })
-      );
+      .populate({
+        path: "comments",
+        options: { sort: { createdAt: -1 } },
+        populate: { path: "author", select: "username profilePicture" },
+      });
     // Return the fetched posts
     return res.status(200).json({
       posts,
