@@ -303,3 +303,48 @@ export const getCommentsOfPost = async (req, res) => {
     });
   }
 };
+
+// Delete post logic
+export const deletePost = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const authorId = req.id;
+    // Find post by ID
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({
+        message: "Post not found",
+        success: false,
+      });
+    }
+    // Check if the logged-in user is the owner of the post or not
+    if (post.author.toString() !== authorId) {
+      return res.status(403).json({
+        message: "Unauthorized",
+        success: false,
+      });
+    }
+    //Delete post
+    await Post.findByIdAndDelete(postId);
+
+    // Remove the post id from user's post list
+    let user = await User.findById(authorId);
+    if (user) {
+      user.posts = user.posts.filter((id) => id.toString() !== postId);
+      await user.save();
+    }
+    // Delete assosiated comments
+    await Comment.deleteMany({ post: postId });
+    return res.status(200).json({
+      message: "Post deleted",
+      success: true,
+    });
+  } catch (error) {
+    console.error("Error deleting post", error);
+    return res.status(500).json({
+      message: "An Unexpected error occured while deleting the post",
+      success: false,
+      error: error.message,
+    });
+  }
+};
