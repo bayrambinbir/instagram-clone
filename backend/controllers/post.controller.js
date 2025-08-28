@@ -348,3 +348,51 @@ export const deletePost = async (req, res) => {
     });
   }
 };
+
+// Bookmark Post Logic
+const bookmarkPost = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const authorId = req.id;
+    // Find post by ID
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({
+        message: "Post not found",
+        success: false,
+      });
+    }
+    const user = await User.findById(authorId);
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+        success: false,
+      });
+    }
+    //Check if the bookmark is already bookmarked
+    if (user.bookmarks.includes(post._id)) {
+      // Post is already bookmarked -> remove from bookmarks
+      await user.updateOne({ $pull: { bookmarks: post._id } });
+      return res.status(200).json({
+        type: "Unsaved",
+        message: "Post removed from bookmarked",
+        success: true,
+      });
+    } else {
+      // Post is not found -> add to the bookmark
+      await user.updateOne({ $addToSet: { bookmarks: post._id } });
+      return res.status(200).json({
+        type: "Saved",
+        message: "Post bookmarked",
+        success: true,
+      });
+    }
+  } catch (error) {
+    console.error("Error bookmarking post", error);
+    return res.status(500).json({
+      message: "An Unexpected error occured while processing your request",
+      success: false,
+      error: error.message,
+    });
+  }
+};
