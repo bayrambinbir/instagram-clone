@@ -14,7 +14,7 @@ export const sendMessage = async (req, res) => {
       });
     }
     //Find or create convertation
-    let conversation = await Conversation.findOne({
+    let conversation = await Conversation.find({
       participants: { $all: [senderId, receiverId] },
     });
 
@@ -44,6 +44,38 @@ export const sendMessage = async (req, res) => {
     return res.status(500).json({
       message: "An error occured while sending the message",
       error: error.message,
+      success: false,
+    });
+  }
+};
+
+// get messages
+export const getMesage = async (req, res) => {
+  try {
+    const senderId = req.id;
+    const receiverId = req.params.id;
+
+    //Find the convertation
+    const conversation = await Conversation.find({
+      participants: { $all: [senderId, receiverId] },
+    });
+
+    if (!conversation) {
+      res.status(200).json({
+        success: true,
+        messages: [],
+      });
+    }
+
+    // return the messages in the conversation
+    res.status(200).json({
+      success: true,
+      messages: conversation.messages,
+    });
+  } catch (error) {
+    console.error("Error retriving messages", error);
+    return res.status(500).json({
+      error: "An error occured while retriving messages",
       success: false,
     });
   }
