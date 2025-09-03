@@ -1,5 +1,5 @@
 import sharp from "sharp";
-import cloudinary from "../utils/cloudinary";
+import cloudinary from "../utils/cloudinary.js";
 import { Post } from "../models/post.model.js";
 import { User } from "../models/user.model.js";
 import { Comment } from "../models/comment.model.js";
@@ -350,7 +350,7 @@ export const deletePost = async (req, res) => {
 };
 
 // Bookmark Post Logic
-const bookmarkPost = async (req, res) => {
+export const bookmarkPost = async (req, res) => {
   try {
     const postId = req.params.id;
     const authorId = req.id;

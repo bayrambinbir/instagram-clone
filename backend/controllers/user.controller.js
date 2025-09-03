@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import getDataUri from "../utils/datauri.js";
 import cloudinary from "../utils/cloudinary.js";
+import { Post } from "../models/post.model.js";
 
 //Registration Logic
 export const register = async (req, res) => {
@@ -70,6 +71,21 @@ export const login = async (req, res) => {
       });
     }
 
+    // Generate a JWT token
+    const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
+      expiresIn: "1d",
+    });
+
+    // Populate each post id in the post array
+    const populatedPosts = await Promise.all(
+      user.posts.map(async (postId) => {
+        const post = await Post.findById(postId);
+        if (post.author.equals(user._id)) {
+          return post;
+        }
+        return null;
+      })
+    );
     // Exclude the password from the return user object
     user = {
       _id: user._id,
@@ -79,13 +95,9 @@ export const login = async (req, res) => {
       bio: user.bio,
       followers: user.followers,
       following: user.following,
-      posts: user.posts,
+      posts: populatedPosts,
     };
 
-    // Generate a JWT token
-    const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
-      expiresIn: "1d",
-    });
     return res
       .cookie("token", token, {
         httpOnly: true,
