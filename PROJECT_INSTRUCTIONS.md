@@ -37,7 +37,40 @@ npm i -D nodemon
 
 ---
 
-## 4. Set up Cloudinary for image uploads
+## 4. Set up Frontend with Vite and React
+
+```sh
+cd frontend
+npm create vite@latest --template=react-js
+```
+
+After the project is created:
+
+```sh
+cd frontend     # Make sure you're in the frontend directory
+npm install     # Install all dependencies
+
+# Install Tailwind CSS and its dependencies
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p    # Initialize Tailwind CSS and create config files
+
+# Install TypeScript node types for better development experience
+npm install -D @types/node
+
+# Initialize shadcn-ui (follow the prompts)
+# Note: Use @latest for stable version, avoid @canary which is less stable
+npx shadcn@latest init
+
+# Add the button component from shadcn-ui
+cd frontend
+npx shadcn@latest add button
+
+npm run dev     # Start development server
+```
+
+---
+
+## 5. Set up Cloudinary for image uploads
 
 1. Go to [Cloudinary Console](https://console.cloudinary.com/) and sign up or log in.
 2. In your Cloudinary dashboard, copy your **Cloud Name**, **API Key**, and **API Secret**.
