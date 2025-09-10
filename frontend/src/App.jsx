@@ -3,9 +3,10 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 import { Button } from "./components/ui/button";
+import Signup from "./Signup";
 
 function App() {
-  return <Button variant="default">Button</Button>;
+  return <Signup />;
 }
 
 export default App;

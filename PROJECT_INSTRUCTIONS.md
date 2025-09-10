@@ -61,9 +61,11 @@ npm install -D @types/node
 # Note: Use @latest for stable version, avoid @canary which is less stable
 npx shadcn@latest init
 
-# Add the button component from shadcn-ui
+# Add components from shadcn-ui
 cd frontend
 npx shadcn@latest add button
+npx shadcn@latest add input
+npx shadcn@latest add label
 
 npm run dev     # Start development server
 ```
