@@ -72,8 +72,12 @@ npm install @radix-ui/react-slot @radix-ui/react-label class-variance-authority 
 # Install additional UI and utility dependencies required for shadcn-ui components and utils
 npm install lucide-react
 # Install lucide-react for icon components (e.g., Loader2)
+npm install sonner next-themes
+# Install sonner for toast notifications and next-themes for theme support
 
 npm run dev     # Start development server
+npm install react-router-dom
+# Install react-router-dom for routing support
 ```
 
 ---

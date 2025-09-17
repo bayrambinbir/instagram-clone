@@ -4,6 +4,8 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import axios from "axios";
 import { toast } from "sonner";
+import { Link, useNavigate } from "react-router-dom";
+import { Loader2 } from "lucide-react";
 
 const Signup = () => {
   // State to handle form input values (username, email, password)
@@ -13,6 +15,7 @@ const Signup = () => {
     password: "",
   });
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   // Function to handle event change
   const changeEventHandler = (e) => {
     setInput({
@@ -37,6 +40,7 @@ const Signup = () => {
       );
       // Check if regsitration was successful
       if (res.data.success) {
+        navigate("/");
         // Show success message
         toast.success(res.data.message);
         // clear the form fields after a successful signup. making the form ready for a new user to sign up
@@ -96,12 +100,19 @@ const Signup = () => {
         {loading ? (
           <Button>
             <Loader2 className="mr-2 h-2 w-4 animate-spin" />
+            Please wait
           </Button>
         ) : (
           <Button type="submit" disabled={loading}>
             Sign Up
           </Button>
         )}
+        <span>
+          Already have an account?{" "}
+          <Link className="text-blue-500" to="/login">
+            Login
+          </Link>
+        </span>
       </form>
     </div>
   );
