@@ -66,6 +66,8 @@ cd frontend
 npx shadcn@latest add button
 npx shadcn@latest add input
 npx shadcn@latest add label
+npm install @radix-ui/react-slot @radix-ui/react-label class-variance-authority clsx tailwind-merge
+# Install additional UI and utility dependencies required for shadcn-ui components and utils
 
 npm run dev     # Start development server
 ```
