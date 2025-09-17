@@ -70,6 +70,8 @@ npx shadcn@latest add sonner
 
 npm install @radix-ui/react-slot @radix-ui/react-label class-variance-authority clsx tailwind-merge
 # Install additional UI and utility dependencies required for shadcn-ui components and utils
+npm install lucide-react
+# Install lucide-react for icon components (e.g., Loader2)
 
 npm run dev     # Start development server
 ```

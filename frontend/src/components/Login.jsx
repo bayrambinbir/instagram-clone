@@ -4,11 +4,10 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import axios from "axios";
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
-const Signup = () => {
-  // State to handle form input values (username, email, password)
+const Login = () => {
   const [input, setInput] = useState({
-    username: "",
     email: "",
     password: "",
   });
@@ -21,12 +20,12 @@ const Signup = () => {
     });
   };
   // Function to handle form submission
-  const signupHandler = async (e) => {
+  const loginHandler = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
       const res = await axios.post(
-        "http://localhost:8000/api/v1/user/register",
+        "http://localhost:8000/api/v1/user/login",
         input,
         {
           headers: {
@@ -39,8 +38,8 @@ const Signup = () => {
       if (res.data.success) {
         // Show success message
         toast.success(res.data.message);
-        // clear the form fields after a successful signup. making the form ready for a new user to sign up
-        setInput({ username: "", email: "", password: "" });
+        // clear the form fields after a successful signup. making the form ready for a new user to log in
+        setInput({ email: "", password: "" });
       }
     } catch (error) {
       console.log(error);
@@ -53,23 +52,12 @@ const Signup = () => {
   return (
     <div className="flex items-center justify-center w-screen h-screen">
       <form
-        onSubmit={signupHandler}
+        onSubmit={loginHandler}
         className="shadow-lg flex flex-col gap-5 p-8"
       >
         <div className="my-4 text-center">
           <h1 className="text-xl font-bold">LOGO</h1>
-          <p>Sign up to see videos and photos from your friends.</p>
-        </div>
-        <div>
-          <Label htmlFor="Username" className="mb-1">
-            Username
-          </Label>
-          <Input
-            type="text"
-            name="username"
-            value={input.username}
-            onChange={changeEventHandler}
-          />
+          <p>Login to see videos and photos from your friends.</p>
         </div>
         <div>
           <Label htmlFor="Email" className="mb-1">
@@ -99,7 +87,7 @@ const Signup = () => {
           </Button>
         ) : (
           <Button type="submit" disabled={loading}>
-            Sign Up
+            Login
           </Button>
         )}
       </form>
@@ -107,4 +95,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Login;
