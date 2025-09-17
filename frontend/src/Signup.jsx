@@ -3,6 +3,7 @@ import { Label } from "./components/ui/label";
 import { Input } from "./components/ui/input";
 import { Button } from "./components/ui/button";
 import axios from "axios";
+import { toast } from "sonner";
 
 const Signup = () => {
   // State to handle form input values (username, email, password)
@@ -22,17 +23,32 @@ const Signup = () => {
   // Function to handle form submission
   const signupHandler = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    const res = await axios.post(
-      "http://localhost:8000/api/v1/user/register",
-      input,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          withCredentails: true, // Allow credentails (cookies) with request
-        },
+    try {
+      setLoading(true);
+      const res = await axios.post(
+        "http://localhost:8000/api/v1/user/register",
+        input,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            withCredentails: true, // Allow credentails (cookies) with request
+          },
+        }
+      );
+      // Check if regsitration was successful
+      if (res.data.success) {
+        // Show success message
+        toast.success(res.data.message);
+        // clear the form fields after a successful signup. making the form ready for a new user to sign up
+        setInput({ username: "", email: "", password: "" });
       }
-    );
+    } catch (error) {
+      console.log(error);
+      // Show error message
+      toast.error(error.response.data.message);
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <div className="flex items-center justify-center w-screen h-screen">
@@ -77,7 +93,9 @@ const Signup = () => {
             onChange={changeEventHandler}
           />
         </div>
-        <Button type="submit">Sign Up</Button>
+        <Button type="submit" disable={loading}>
+          {loading ? "Sign up..." : "Sign Up"}
+        </Button>
       </form>
     </div>
   );
