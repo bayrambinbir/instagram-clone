@@ -34,8 +34,8 @@ const Signup = () => {
         {
           headers: {
             "Content-Type": "application/json",
-            withCredentails: true, // Allow credentails (cookies) with request
           },
+          withCredentials: true, // Allow credentails (cookies) with request
         }
       );
       // Check if regsitration was successful

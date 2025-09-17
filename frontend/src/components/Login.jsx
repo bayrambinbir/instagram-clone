@@ -32,8 +32,8 @@ const Login = () => {
         {
           headers: {
             "Content-Type": "application/json",
-            withCredentails: true, // Allow credentails (cookies) with request
           },
+          withCredentials: true, // Allow credentails (cookies) with request
         }
       );
       // Check if login was successful
